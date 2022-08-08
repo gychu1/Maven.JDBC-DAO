@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IPhonesDAO implements GenericDAO <IPhones>{
@@ -44,6 +45,24 @@ public class IPhonesDAO implements GenericDAO <IPhones>{
     }
 
     public List<IPhones> findAll() {
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM iPhones");
+
+            List<IPhones> iPhones = new ArrayList<>();
+
+            while(rs.next())
+            {
+                IPhones iPhone = extractUserFromResultSet(rs);
+                iPhones.add(iPhone);
+            }
+
+            return iPhones;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
         return null;
     }
 
