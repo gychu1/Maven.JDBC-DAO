@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
+    //"App runner" to run each CRUD operation
 
     public static void main(String[] args) {
 
