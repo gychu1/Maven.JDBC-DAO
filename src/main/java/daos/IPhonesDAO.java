@@ -2,10 +2,7 @@ package daos;
 
 import models.IPhones;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,14 +64,56 @@ public class IPhonesDAO implements GenericDAO <IPhones>{
     }
 
     public IPhones update(IPhones dto) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE iPhones SET Name=?, Year_released=?, Cost=?," +
+                    "Fingerprint=?, Size=? WHERE id=?");
+            ps.setString(1, dto.getName());
+            ps.setString(2, dto.getYear_released());
+            ps.setInt(3, dto.getCost());
+            ps.setString(4, dto.getFingerprint());
+            ps.setFloat(5, dto.getSize());
+            ps.setInt(6, dto.getId());
+            int i = ps.executeUpdate();
+
+            if(i >= 1) {
+                return dto;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         return null;
     }
 
     public IPhones create(IPhones dto) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO iPhones VALUES (?, ?, ?, ?, ?, ?)");
+            ps.setString(1, dto.getName());
+            ps.setString(2, dto.getYear_released());
+            ps.setInt(3, dto.getCost());
+            ps.setString(4, dto.getFingerprint());
+            ps.setFloat(5, dto.getSize());
+            ps.setInt(6, dto.getId());
+            int i = ps.executeUpdate();
+
+            if(i >= 1) {
+                return dto;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
         return null;
     }
 
     public void delete(int id) {
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("DELETE FROM iPhones WHERE id=" + id);
 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }
